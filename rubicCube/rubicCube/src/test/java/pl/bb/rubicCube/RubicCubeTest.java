@@ -4,8 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import pl.bb.rubicCube.RubicCube;
-
 public class RubicCubeTest {
 
 	RubicCube cube = new RubicCube();
@@ -22,7 +20,20 @@ public class RubicCubeTest {
 
 	@Test
 	public void hasFacesWithAllSides() {
+		for (Side side : Side.values()) {
+			Face face = cube.getFace(side);
+			Assert.assertEquals(face.getSide(), side);
+		}
+	}
 
+	@Test(expectedExceptions = UnsupportedOperationException.class)
+	public void cannotAddFace() {
+		cube.faces.put(Side.Bottom, new Face(Side.Bottom));
+	}
+
+	@Test(expectedExceptions = UnsupportedOperationException.class)
+	public void cannotRemoveFace() {
+		cube.faces.clear();
 	}
 
 	@Test

@@ -1,5 +1,5 @@
 package pl.bb.rubicCube;
 
-enum Sides {
+enum Side {
 	Top, Bottom, North, South, West, East
 }
