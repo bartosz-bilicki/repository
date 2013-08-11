@@ -4,18 +4,20 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 
+import pl.bb.rubicCube.enums.FacePosition;
+
 public class RubicCube {
 
-	Map<Side, Face> faces;
+	Map<FacePosition, Face> faces;
 
 	public RubicCube() {
 		initalizeFaces();
 	}
 
 	private void initalizeFaces() {
-		Map<Side, Face> faces = new Hashtable<Side, Face>();
-		for (Side side : Side.values()) {
-			faces.put(side, new Face(side));
+		Map<FacePosition, Face> faces = new Hashtable<FacePosition, Face>();
+		for (FacePosition facePosition : FacePosition.values()) {
+			faces.put(facePosition, new Face(facePosition));
 		}
 		this.faces = Collections.unmodifiableMap(faces);
 	}
@@ -25,8 +27,8 @@ public class RubicCube {
 		return false;
 	}
 
-	public Face getFace(Side side) {
-		return faces.get(side);
+	public Face getFace(FacePosition facePosition) {
+		return faces.get(facePosition);
 
 	}
 

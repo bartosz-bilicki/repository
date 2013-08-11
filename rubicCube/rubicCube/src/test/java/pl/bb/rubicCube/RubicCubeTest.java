@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import pl.bb.rubicCube.enums.FacePosition;
+
 public class RubicCubeTest {
 
 	RubicCube cube = new RubicCube();
@@ -19,26 +21,23 @@ public class RubicCubeTest {
 	}
 
 	@Test
-	public void hasFacesWithAllSides() {
-		for (Side side : Side.values()) {
-			Face face = cube.getFace(side);
-			Assert.assertEquals(face.getSide(), side);
+	public void cubeHasAll6Faces() {
+		Assert.assertEquals(6, FacePosition.values().length);
+
+		for (FacePosition facePosition : FacePosition.values()) {
+			Face face = cube.getFace(facePosition);
+			Assert.assertEquals(face.getPosition(), facePosition);
 		}
 	}
 
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void cannotAddFace() {
-		cube.faces.put(Side.Bottom, new Face(Side.Bottom));
+		cube.faces.put(FacePosition.Bottom, new Face(FacePosition.Bottom));
 	}
 
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void cannotRemoveFace() {
 		cube.faces.clear();
-	}
-
-	@Test
-	public void hasNineFaces() {
-
 	}
 
 }
