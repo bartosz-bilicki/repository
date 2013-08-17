@@ -28,24 +28,24 @@ public class StringReverseTest {
 		return new Object[][] { { "a" }, { "A" }, { "x" } };
 	}
 
-	@DataProvider
-	private static final Object[][] threeCharacters() {
-		return new Object[][] { { "aaa" }, { "aAa" }, { "XXX" } };
-	}
-
 	@Test(dataProvider = "threeCharacters")
 	public void reversThreeeChar(String threeCharacters) {
 		Assert.assertEquals(threeCharacters, reverse(threeCharacters));
 	}
 
 	@DataProvider
-	private static final Object[][] simple() {
-		return new Object[][] { { "abc", "cba" }, { "aA", "Aa" }, { "1234567890", "0987654321" } };
+	private static final Object[][] threeCharacters() {
+		return new Object[][] { { "aaa" }, { "aAa" }, { "XXX" } };
 	}
 
 	@Test(dataProvider = "simple")
 	public void reverseSimple(String actual, String expected) {
 		Assert.assertEquals(reverse(actual), expected);
 		Assert.assertEquals(reverse(expected), actual);
+	}
+
+	@DataProvider
+	private static final Object[][] simple() {
+		return new Object[][] { { "abcd", "dcba" }, { "abc", "cba" }, { "aA", "Aa" }, { "1234567890", "0987654321" } };
 	}
 }
