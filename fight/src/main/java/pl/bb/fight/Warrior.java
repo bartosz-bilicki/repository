@@ -1,5 +1,8 @@
 package pl.bb.fight;
 
+import pl.bb.fight.damage.Damage;
+import pl.bb.fight.damage.PhisicalDamage;
+
 public class Warrior {
 
 	private final int maximumLife;
@@ -22,15 +25,16 @@ public class Warrior {
 		return getCurrentLife() > 0;
 	}
 
-	public int dealDamage() {
-		return 1;
+	public Damage dealDamage() {
+		return new PhisicalDamage(1);
 	}
 
-	public void takeDamage(int damage) {
-		if (damage >= currentLife) {
+	public void takeDamage(Damage damage) {
+		int amount = damage.getAmount();
+		if (amount >= currentLife) {
 			currentLife = 0;
 		} else {
-			currentLife -= damage;
+			currentLife -= amount;
 		}
 	}
 }
