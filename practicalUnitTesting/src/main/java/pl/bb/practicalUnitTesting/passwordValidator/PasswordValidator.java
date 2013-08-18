@@ -14,16 +14,16 @@ public class PasswordValidator {
 
 	}
 
-	public boolean validate(String password) {
+	public ValidationResult validate(String password) {
 		if (minimumLenght > 0 && password.length() < minimumLenght) {
-			return false;
+			return ValidationResult.FAIL_MINIMUM_LENGTH;
 		}
 
 		if (validadeAlfaNumeric(password) == false) {
-			return false;
+			return ValidationResult.FAIL_ALFA_NUMERIC;
 		}
 
-		return true;
+		return ValidationResult.PASS;
 	}
 
 	private boolean validadeAlfaNumeric(String password) {

@@ -5,7 +5,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-
 @Test
 public class PasswordValidatorTest {
 
@@ -19,7 +18,7 @@ public class PasswordValidatorTest {
 	@Test(dataProvider = "passingMinLenght")
 	public void minimumLenghtPass(int length, String password) {
 		validator.setMinimumLength(length);
-		Assert.assertTrue(validator.validate(password));
+		Assert.assertEquals(validator.validate(password), ValidationResult.PASS);
 	}
 
 	@DataProvider
@@ -31,7 +30,7 @@ public class PasswordValidatorTest {
 	@Test(dataProvider = "failingMinLenght")
 	public void minimumLenghtFail(int length, String password) {
 		validator.setMinimumLength(length);
-		Assert.assertFalse(validator.validate(password));
+		Assert.assertEquals(validator.validate(password), ValidationResult.FAIL_MINIMUM_LENGTH);
 	}
 
 	@DataProvider
@@ -42,7 +41,7 @@ public class PasswordValidatorTest {
 	@Test(dataProvider = "failingNonAlfaNumericCharacters")
 	public void alfaNumericCharactersFail(int alfaNumeric, String password) {
 		validator.setMinimumAlfaNumeric(alfaNumeric);
-		Assert.assertFalse(validator.validate(password));
+		Assert.assertEquals(validator.validate(password), ValidationResult.FAIL_ALFA_NUMERIC);
 	}
 
 	@DataProvider
@@ -53,7 +52,7 @@ public class PasswordValidatorTest {
 	@Test(dataProvider = "passNonAlfaNumericCharacters")
 	public void alfaNumericCharactersPass(int alfaNumeric, String password) {
 		validator.setMinimumAlfaNumeric(alfaNumeric);
-		Assert.assertTrue(validator.validate(password));
+		Assert.assertEquals(validator.validate(password), ValidationResult.PASS);
 	}
 
 	@DataProvider
