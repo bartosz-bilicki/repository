@@ -1,16 +1,18 @@
 package pl.bb.practicalUnitTesting.bookingSystem;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.joda.time.Hours;
 
 public class SimpleBookingSystem {
-	private final boolean[] bookings = new boolean[24];
+	private final SortedSet<Hours> bookings = new TreeSet<Hours>();
 
 	public void makeReservation(Hours from) {
 		checkIfAnyHourInRangeBooked(from);
-		bookings[from.getHours()] = true;
+		bookings.add(from);
 	}
 
 	private void checkIfAnyHourInRangeBooked(Hours from) {
@@ -20,20 +22,10 @@ public class SimpleBookingSystem {
 	}
 
 	public boolean isBooked(Hours hour) {
-		return isBooked(hour.getHours());
+		return bookings.contains(hour);
 	}
 
-	private boolean isBooked(int hour) {
-		return bookings[hour];
-	}
-
-	public Hours[] getBookedHours() {
-		Set<Hours> ret = new HashSet<Hours>();
-		for (int i = 0; i < 24; i++) {
-			if (isBooked(i)) {
-				ret.add(Hours.hours(i));
-			}
-		}
-		return ret.toArray(new Hours[0]);
+	public Set<Hours> getBookedHours() {
+		return Collections.unmodifiableSet(bookings);
 	}
 }

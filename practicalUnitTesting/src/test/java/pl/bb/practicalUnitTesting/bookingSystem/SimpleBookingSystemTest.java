@@ -1,5 +1,7 @@
 package pl.bb.practicalUnitTesting.bookingSystem;
 
+import java.util.Set;
+
 import org.joda.time.Hours;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -32,8 +34,8 @@ public class SimpleBookingSystemTest {
 			booking.makeReservation(hours[i]);
 		}
 
-		Hours[] bookedHours = booking.getBookedHours();
-		Assert.assertEqualsNoOrder(bookedHours, hours);
+		Set<Hours> bookedHours = booking.getBookedHours();
+		Assert.assertEqualsNoOrder(bookedHours.toArray(), hours);
 	}
 
 	@DataProvider
