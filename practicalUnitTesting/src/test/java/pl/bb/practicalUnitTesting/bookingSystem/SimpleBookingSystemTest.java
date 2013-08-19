@@ -1,8 +1,13 @@
 package pl.bb.practicalUnitTesting.bookingSystem;
 
+import static com.googlecode.catchexception.CatchException.catchException;
+import static com.googlecode.catchexception.CatchException.caughtException;
+import static com.googlecode.catchexception.apis.CatchExceptionBdd.then;
+
 import java.util.Set;
 
 import org.joda.time.Hours;
+import org.joda.time.MonthDay;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -11,6 +16,7 @@ import org.testng.annotations.Test;
 public class SimpleBookingSystemTest {
 
 	public void shouldMakeReservation_book() {
+		MonthDay m;
 		SimpleBookingSystem booking = new SimpleBookingSystem();
 		booking.makeReservation(Hours.hours(12));
 
@@ -19,11 +25,13 @@ public class SimpleBookingSystemTest {
 		Assert.assertFalse(booking.isBooked(Hours.hours(13)));
 	}
 
-	@Test(expectedExceptions = AlreadyBookedException.class)
+	@Test
 	public void shouldNotBookAlreadyBookedHour() {
 		SimpleBookingSystem booking = new SimpleBookingSystem();
 		booking.makeReservation(Hours.hours(12));
-		booking.makeReservation(Hours.hours(12));
+
+		catchException(booking).makeReservation(Hours.hours(12));
+		then(caughtException()).isInstanceOf(AlreadyBookedException.class);
 	}
 
 	@Test(dataProvider = "bookedHoursDataProvider")
