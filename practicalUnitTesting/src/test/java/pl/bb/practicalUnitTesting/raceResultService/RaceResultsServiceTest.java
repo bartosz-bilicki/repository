@@ -10,15 +10,18 @@ import org.testng.annotations.Test;
 @Test
 public class RaceResultsServiceTest {
 
-	private RaceResultsService service;
-	Message message;
-	Client client;
+	private RaceResultsService serviceSut;
+	Message f1RaceMessageMock;
+	Client clientMock;
 
 	@BeforeMethod
 	public void init() {
-		service = new RaceResultsService();
-		message = mock(Message.class);
-		client = mock(Client.class);
+		serviceSut = new RaceResultsService();
+
+		f1RaceMessageMock = mock(Message.class);
+		when(f1RaceMessageMock.getCategory()).thenReturn(MessageCategory.F1_RACE);
+
+		clientMock = mock(Client.class);
 	}
 
 	public void shouldNotSubscribedClientDoNotRecieveMessage() {
@@ -26,31 +29,31 @@ public class RaceResultsServiceTest {
 		Client client2 = mock(Client.class);
 
 		// when
-		service.addSubscriber(client);
-		service.send(message);
+		serviceSut.addSubscriber(clientMock);
+		serviceSut.send(f1RaceMessageMock);
 
 		// then
-		verify(client).receive(message);
-		verify(client2, never()).receive(message);
+		verify(clientMock).receive(f1RaceMessageMock);
+		verify(client2, never()).receive(f1RaceMessageMock);
 	}
 
 	public void shouldUnsubscribedClientDoNotRecieveMessage() {
 		// when
-		service.addSubscriber(client);
-		service.removeSubscriber(client);
-		service.send(message);
+		serviceSut.addSubscriber(clientMock);
+		serviceSut.removeSubscriber(clientMock);
+		serviceSut.send(f1RaceMessageMock);
 
-		verify(client, never()).receive(message);
+		verify(clientMock, never()).receive(f1RaceMessageMock);
 	}
 
 	public void shouldSubscriberRecieveMessageOnce() {
 		// when
-		service.addSubscriber(client);
-		service.addSubscriber(client);
-		service.send(message);
+		serviceSut.addSubscriber(clientMock);
+		serviceSut.addSubscriber(clientMock);
+		serviceSut.send(f1RaceMessageMock);
 
 		// then
-		verify(client).receive(message);
+		verify(clientMock).receive(f1RaceMessageMock);
 	}
 
 	public void shouldUnsubcribingNotSubscribed_throwException() {
@@ -58,9 +61,30 @@ public class RaceResultsServiceTest {
 		Client client2 = mock(Client.class);
 
 		// when
-		verifyException(service, NotSubscribedException.class).removeSubscriber(client2);
+		verifyException(serviceSut, NotSubscribedException.class).removeSubscriber(client2);
 		NotSubscribedException ex = caughtException();
 
 		Assertions.assertThat(ex.getClient()).isEqualTo(client2);
+	}
+
+	public void subcribeToCategoryTest() {
+		// given
+		when(f1RaceMessageMock.getCategory()).thenReturn(MessageCategory.BOAT_RACE);
+
+		// when
+		serviceSut.addSubscriber(clientMock, MessageCategory.BOAT_RACE);
+		serviceSut.send(f1RaceMessageMock);
+
+		// then
+		verify(clientMock).receive(f1RaceMessageMock);
+	}
+
+	public void subcribeToAnotherCategoryTest() {
+		// when
+		serviceSut.addSubscriber(clientMock, MessageCategory.BOAT_RACE);
+		serviceSut.send(f1RaceMessageMock);
+
+		// then
+		verify(clientMock, never()).receive(f1RaceMessageMock);
 	}
 }

@@ -2,6 +2,10 @@ package pl.bb.practicalUnitTesting;
 
 public class FahrenheitCelsiusConverter {
 
+	private FahrenheitCelsiusConverter() {
+
+	}
+
 	public static int toFahrenheit(int i) {
 		return i * 9 / 5 + 32;
 	}

@@ -1,13 +1,13 @@
 package pl.bb.practicalUnitTesting;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @Test
 public class FahrenheitCelsiusConverterTest {
-	@Test(dataProvider = "fahrenheitToCelsius")
+	@Test(dataProvider = "celsiusToFahrenheit")
 	public void shouldConvertCelsiusToFahrenheit(int celsius, int fahrenheit) {
 		assertEquals(FahrenheitCelsiusConverter.toFahrenheit(celsius), fahrenheit);
 	}

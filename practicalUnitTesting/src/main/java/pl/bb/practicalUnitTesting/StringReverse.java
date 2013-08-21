@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StringReverse {
+	private StringReverse() {
+
+	}
+
 	public static String reverse(String s) {
 		List<String> tempArray = new ArrayList<String>(s.length());
 		for (int i = 0; i < s.length(); i++) {
