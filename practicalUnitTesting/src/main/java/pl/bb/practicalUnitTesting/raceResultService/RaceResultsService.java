@@ -14,22 +14,25 @@ public class RaceResultsService {
 	}
 
 	public void addSubscriber(Client client, MessageCategory messageCategory) {
+		if (isClientSubscribedToMessageCategory(client, messageCategory)) {
+			throw new AlreadySubscribedException();
+		}
 		clientMap.put(client, messageCategory);
+	}
+
+	private boolean isClientSubscribedToMessageCategory(Client client, MessageCategory messageCategory) {
+		return clientMap.containsEntry(client, messageCategory);
 	}
 
 	public void send(Message message) {
 		for (Client client : clientMap.keySet()) {
-			if (isClientSubscribedToMessageCategory(message.getCategory(), client)) {
+			if (isClientSubscribedToMessageCategory(client, message.getCategory())) {
 				client.receive(message);
 			}
 		}
 	}
 
-	private boolean isClientSubscribedToMessageCategory(MessageCategory messageCategory, Client client) {
-		return clientMap.containsEntry(client, messageCategory);
-	}
-
-	public void removeSubscriber(Client client) {
+	public void removeSubscription(Client client) {
 		if (isClientSubscribed(client) == false) {
 			throw new NotSubscribedException(client);
 		}
