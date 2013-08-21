@@ -19,15 +19,25 @@ public class RaceResultsService {
 
 	public void send(Message message) {
 		for (Client client : clientMap.keySet()) {
-			if (clientMap.containsEntry(client, message.getCategory())) {
+			if (isClientSubscribedToMessageCategory(message.getCategory(), client)) {
 				client.receive(message);
 			}
 		}
 	}
 
+	private boolean isClientSubscribedToMessageCategory(MessageCategory messageCategory, Client client) {
+		return clientMap.containsEntry(client, messageCategory);
+	}
+
 	public void removeSubscriber(Client client) {
-		if (clientMap.removeAll(client).isEmpty()) {
+		if (isClientSubscribed(client) == false) {
 			throw new NotSubscribedException(client);
 		}
+
+		clientMap.removeAll(client);
+	}
+
+	private boolean isClientSubscribed(Client client) {
+		return clientMap.containsKey(client);
 	}
 }
