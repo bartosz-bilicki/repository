@@ -26,10 +26,14 @@ public class RaceResultsService {
 
 	public void send(Message message) {
 		for (Client client : clientMap.keySet()) {
-			if (isClientSubscribedToMessageCategory(client, message.getCategory())) {
+			if (isSubscribedToCategoryAll(client) || isClientSubscribedToMessageCategory(client, message.getCategory())) {
 				client.receive(message);
 			}
 		}
+	}
+
+	private boolean isSubscribedToCategoryAll(Client client) {
+		return isClientSubscribedToMessageCategory(client, MessageCategory.ALL);
 	}
 
 	public void removeSubscription(Client client) {

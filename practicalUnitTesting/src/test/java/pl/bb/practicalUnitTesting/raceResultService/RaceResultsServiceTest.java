@@ -13,6 +13,7 @@ public class RaceResultsServiceTest {
 	private RaceResultsService serviceSut;
 	private Message f1RaceMessageMock;
 	private Message boatRaceMessageMock;
+	private Message allRaceMessageMock;
 	private Client clientMock;
 
 	@BeforeMethod
@@ -24,6 +25,9 @@ public class RaceResultsServiceTest {
 
 		boatRaceMessageMock = mock(Message.class);
 		initMessageMock(boatRaceMessageMock, MessageCategory.BOAT_RACE);
+
+		allRaceMessageMock = mock(Message.class);
+		initMessageMock(allRaceMessageMock, MessageCategory.ALL);
 
 		clientMock = mock(Client.class);
 	}
@@ -97,6 +101,16 @@ public class RaceResultsServiceTest {
 		serviceSut.send(boatRaceMessageMock);
 
 		// then
+		verify(clientMock).receive(f1RaceMessageMock);
+		verify(clientMock).receive(boatRaceMessageMock);
+	}
+
+	public void shouldSubscibedToALLrecieveAllMessages() {
+		serviceSut.addSubscriber(clientMock, MessageCategory.ALL);
+
+		serviceSut.send(f1RaceMessageMock);
+		serviceSut.send(boatRaceMessageMock);
+
 		verify(clientMock).receive(f1RaceMessageMock);
 		verify(clientMock).receive(boatRaceMessageMock);
 	}
