@@ -1,5 +1,8 @@
 package pl.bb.fight.damage;
 
+import javax.annotation.concurrent.Immutable;
+
+@Immutable
 public class PhisicalDamage implements Damage {
 
 	private final int amount;
