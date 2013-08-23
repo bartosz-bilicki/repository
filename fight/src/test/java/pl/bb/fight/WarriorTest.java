@@ -6,8 +6,8 @@ import static org.mockito.Mockito.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import pl.bb.fight.armor.Armor;
 import pl.bb.fight.damage.Damage;
-import pl.bb.fight.weapon.WarriorFist;
 
 @Test
 public class WarriorTest {
@@ -15,18 +15,11 @@ public class WarriorTest {
 	private Warrior warriorSut;
 	private final int LIFE = 99;
 	private final int DAMAGE = 12;
+	private final String NAME = "NAME";
 
 	@BeforeMethod
 	public void setupSut() {
-		warriorSut = new Warrior(LIFE);
-	}
-
-	public void shouldNewWariorActualLifeEqualToMaximumLife() {
-		assertThat(warriorSut.getMaximumLife()).isEqualTo(warriorSut.getCurrentLife());
-	}
-
-	public void shouldNewWarriorBeAlive() {
-		assertThat(warriorSut.isAlive()).isTrue();
+		warriorSut = new Warrior(NAME, LIFE);
 	}
 
 	public void shouldDemageTakenReduceLife() {
@@ -55,13 +48,30 @@ public class WarriorTest {
 		assertThat(warriorSut.isAlive()).isFalse();
 	}
 
-	public void shouldNewWariorHaveWarriorFistWeapon() {
-		assertThat(warriorSut.getWeapon()).isNotNull();
-		assertThat(warriorSut.getWeapon()).isInstanceOf(WarriorFist.class);
-	}
-
 	public void shouldWarriorDealWeaponDamage() {
 		assertThat(warriorSut.dealDamage()).isEqualTo(warriorSut.getWeaponDamage());
 	}
 
+	public void shouldToStringContainName() {
+		assertThat(warriorSut.toString()).contains(NAME);
+	}
+
+	public void shouldArmorReduceDamage() {
+		// given warrior with armor
+		Armor armorMock = mock(Armor.class);
+		when(armorMock.getPhisicalDamageReductionAmount()).thenReturn(1);
+		warriorSut.setArmor(armorMock);
+
+		// given damage
+		Damage damageMock = mock(Damage.class);
+		when(damageMock.getAmount()).thenReturn(15);
+
+		// when take damage
+		warriorSut.takeDamage(damageMock);
+
+		// then recieves less damage than dealt
+		assertThat(warriorSut.getCurrentLife()).isEqualTo(
+				warriorSut.getMaximumLife() - damageMock.getAmount() + armorMock.getPhisicalDamageReductionAmount());
+
+	}
 }
