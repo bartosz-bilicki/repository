@@ -3,30 +3,41 @@ package pl.bb.fight;
 import pl.bb.fight.armor.Armor;
 import pl.bb.fight.armor.NoArmor;
 import pl.bb.fight.damage.Damage;
+import pl.bb.fight.damage.PhisicalDamage;
+import pl.bb.fight.statistics.Strength;
+import pl.bb.fight.statistics.Vitality;
 import pl.bb.fight.weapon.WarriorFist;
 import pl.bb.fight.weapon.Weapon;
 
 public class Warrior {
-
-	private final int maximumLife;
-	private int currentLife;
+	private static final int VITALITY_DEFAULT = 100;
+	private static final int STRENGHT_DEFAULT = 1;
 
 	private final String name;
 
+	private final Vitality vitality;
+	private int currentLife;
+
+	private Strength strenght;
+
 	private Weapon weapon;
 	private Armor armor;
+	private int level = 0;
 
-	public Warrior(String name, int maximumLife) {
-		this.maximumLife = maximumLife;
-		this.currentLife = maximumLife;
+	public Warrior(String name) {
 		this.name = name;
+
+		this.vitality = new Vitality(VITALITY_DEFAULT);
+		this.currentLife = vitality.getValue();
+
+		this.strenght = new Strength(STRENGHT_DEFAULT);
 
 		weapon = new WarriorFist();
 		armor = new NoArmor();
 	}
 
 	public int getMaximumLife() {
-		return maximumLife;
+		return vitality.getValue();
 	}
 
 	public int getCurrentLife() {
@@ -65,8 +76,8 @@ public class Warrior {
 		this.weapon = weapon;
 	}
 
-	public Damage dealDamage() {
-		return weapon.getDamage();
+	public Damage getDamage() {
+		return new PhisicalDamage(weapon.getDamageAmount() + getStrengthValue());
 	}
 
 	@Override
@@ -81,5 +92,30 @@ public class Warrior {
 
 	public void setArmor(Armor armor) {
 		this.armor = armor;
+	}
+
+	void setStrength(Strength strenght) {
+		this.strenght = strenght;
+
+	}
+
+	public int getStrengthValue() {
+		return strenght.getValue();
+	}
+
+	public void levelUp() {
+		level++;
+		strenght.levelUp();
+		vitality.levelUp();
+		currentLife = vitality.getValue();
+
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public int getVitalityValue() {
+		return vitality.getValue();
 	}
 }

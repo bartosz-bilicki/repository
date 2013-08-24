@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 
 import pl.bb.fight.armor.Armor;
 import pl.bb.fight.damage.Damage;
+import pl.bb.fight.statistics.Strength;
 
 @Test
 public class WarriorTest {
@@ -19,7 +20,7 @@ public class WarriorTest {
 
 	@BeforeMethod
 	public void setupSut() {
-		warriorSut = new Warrior(NAME, LIFE);
+		warriorSut = new Warrior(NAME);
 	}
 
 	public void shouldDemageTakenReduceLife() {
@@ -48,10 +49,6 @@ public class WarriorTest {
 		assertThat(warriorSut.isAlive()).isFalse();
 	}
 
-	public void shouldWarriorDealWeaponDamage() {
-		assertThat(warriorSut.dealDamage()).isEqualTo(warriorSut.getWeaponDamage());
-	}
-
 	public void shouldToStringContainName() {
 		assertThat(warriorSut.toString()).contains(NAME);
 	}
@@ -72,6 +69,21 @@ public class WarriorTest {
 		// then recieves less damage than dealt
 		assertThat(warriorSut.getCurrentLife()).isEqualTo(
 				warriorSut.getMaximumLife() - damageMock.getAmount() + armorMock.getPhisicalDamageReductionAmount());
+
+	}
+
+	public void shouldDealDamageUseWeaponAndStrenght() {
+		// given warior has Strength
+		Strength strenghtMock = mock(Strength.class);
+		when(strenghtMock.getValue()).thenReturn(10);
+		warriorSut.setStrength(strenghtMock);
+
+		// when
+		Damage damage = warriorSut.getDamage();
+
+		// then
+		assertThat(damage.getAmount()).isEqualTo(
+				warriorSut.getWeaponDamage().getAmount() + warriorSut.getStrengthValue());
 
 	}
 }

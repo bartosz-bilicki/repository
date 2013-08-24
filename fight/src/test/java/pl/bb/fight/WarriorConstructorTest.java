@@ -18,7 +18,7 @@ public class WarriorConstructorTest {
 
 	@BeforeMethod
 	public void setupSut() {
-		warriorSut = new Warrior(NAME, LIFE);
+		warriorSut = new Warrior(NAME);
 	}
 
 	public void shouldNewWariorActualLifeEqualToMaximumLife() {

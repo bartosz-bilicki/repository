@@ -2,6 +2,7 @@ package pl.bb.fight.weapon;
 
 import static org.fest.assertions.api.Assertions.*;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import pl.bb.fight.damage.PhisicalDamage;
@@ -11,6 +12,7 @@ public class WarriorFistTest {
 
 	private WarriorFist warriorFistSut;
 
+	@BeforeMethod
 	public void setupSut() {
 		warriorFistSut = new WarriorFist();
 	}
