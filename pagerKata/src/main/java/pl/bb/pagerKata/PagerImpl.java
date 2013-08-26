@@ -1,16 +1,24 @@
 package pl.bb.pagerKata;
 
+import com.google.common.collect.Range;
+
 public class PagerImpl {
 
 	private final int itemCount;
 	private final int itemsPerPage;
-	private final int pageCount;
+	private final int visiblePageLinksBeforeAndAfterCurrentPage;
+	private final int pageCount; // computed
 	private int currentPageNumber;
 
-	public PagerImpl(int itemCount, int itemsPerPage) {
-		this.itemCount = itemCount;
+	public PagerImpl(int totalItemCount, int itemsPerPage, int visiblePageLinksBeforeAndAfterCurrentPage) {
+		this.itemCount = totalItemCount;
 		this.itemsPerPage = itemsPerPage;
+		this.visiblePageLinksBeforeAndAfterCurrentPage = visiblePageLinksBeforeAndAfterCurrentPage;
 		this.pageCount = computePageCount();
+	}
+
+	public PagerImpl(int totalItemCount, int itemsPerPage) {
+		this(totalItemCount, itemsPerPage, 3);
 	}
 
 	private int computePageCount() {
@@ -22,19 +30,22 @@ public class PagerImpl {
 		return pageCount;
 	}
 
-	public boolean isPreviousPageLinkVisible() {
+	public boolean hasPreviousPage() {
 		return currentPageNumber != 0;
 
 	}
 
-	public boolean isNextPageLinkVisible() {
+	public boolean hasNextPage() {
 		int lastPageNumber = getPageCount() - 1;
 		return currentPageNumber != lastPageNumber;
 
 	}
 
-	public int[] getVisiblePageNumbers() {
-		return null;
+	public Range<Integer> getVisiblePageNumbers() {
+		int firstIndex = Math.max(0, currentPageNumber - visiblePageLinksBeforeAndAfterCurrentPage);
+		int lastIndex = Math.min(currentPageNumber + visiblePageLinksBeforeAndAfterCurrentPage, pageCount - 1);
+
+		return Range.closed(firstIndex, lastIndex);
 	}
 
 	public void goToPage(int pageNumber) {
@@ -43,7 +54,7 @@ public class PagerImpl {
 	}
 
 	private void validatePageNumber(int pageNumber) {
-		if (pageNumber < 0 || pageNumber > getPageCount()) {
+		if (pageNumber < 0 || pageNumber >= getPageCount()) {
 			throw new PageOutOfBoundException();
 		}
 	}
