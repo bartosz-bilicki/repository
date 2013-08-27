@@ -1,6 +1,6 @@
 package pl.bb.practicalUnitTesting.helpDesk;
 
-import static org.fest.assertions.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Calendar;

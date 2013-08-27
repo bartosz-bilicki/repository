@@ -1,6 +1,6 @@
 package pl.bb.practicalUnitTesting;
 
-import static org.fest.assertions.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
