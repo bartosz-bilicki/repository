@@ -13,6 +13,10 @@ public class Pager {
 	private final int pageCount; // computed
 	private int currentPageNumber = 1;
 
+	public Pager(int totalItemCount, int itemsPerPage) {
+		this(totalItemCount, itemsPerPage, 3);
+	}
+
 	public Pager(int totalItemCount, int itemsPerPage, int visiblePageLinksBeforeAndAfterCurrentPage) {
 		if (totalItemCount <= 0 || itemsPerPage <= 0) {
 			throw new InvalidPagerException();
@@ -21,10 +25,6 @@ public class Pager {
 		this.itemsPerPage = itemsPerPage;
 		this.visiblePageLinksBeforeAndAfterCurrentPage = visiblePageLinksBeforeAndAfterCurrentPage;
 		this.pageCount = computePageCount();
-	}
-
-	public Pager(int totalItemCount, int itemsPerPage) {
-		this(totalItemCount, itemsPerPage, 3);
 	}
 
 	private int computePageCount() {

@@ -34,9 +34,9 @@ public class PagerTest {
 	}
 
 	@Test(dataProvider = "threePagePagers")
-	public void shuldHaveThreePages(int itemCount, int itemsPerPage) {
+	public void shouldNewPagerBeOnPageOne(int itemCount, int itemsPerPage) {
 		Pager pager = new Pager(itemCount, itemsPerPage);
-		assertThat(pager.getPageCount()).isEqualTo(3);
+		assertThat(pager.getCurrentPageNumber()).isEqualTo(1);
 	}
 
 	@DataProvider
@@ -44,11 +44,17 @@ public class PagerTest {
 		return new Object[][] { { 30, 10 }, { 3, 1 }, { 29, 10 } };
 	}
 
+	@Test(dataProvider = "threePagePagers")
+	public void shouldHaveThreePages(int itemCount, int itemsPerPage) {
+		Pager pager = new Pager(itemCount, itemsPerPage);
+		assertThat(pager.getPageCount()).isEqualTo(3);
+	}
+
 	@Test(dataProvider = "threePagePagers", dependsOnMethods = "shuldHaveThreePages")
 	public void shouldGoToPageChangeCurrentPageNumber(int itemCount, int itemsPerPage) {
 		Pager pager = new Pager(itemCount, itemsPerPage);
 
-		for (int i = 1; i < pager.getPageCount() + 1; i++) {
+		for (int i = 1; i <= pager.getPageCount(); i++) {
 			pager.setCurrentPage(i);
 			assertThat(pager.getCurrentPageNumber()).isEqualTo(i);
 		}
@@ -102,14 +108,14 @@ public class PagerTest {
 	}
 
 	@Test(dataProvider = "onePagePager")
-	public void testGetVisiblePageNumbersOnePage(int itemCount, int itemsPerPage) {
+	public void shouldOnePagePagerShowOnePage(int itemCount, int itemsPerPage) {
 		Pager pager = new Pager(itemCount, itemsPerPage);
 		Range<Integer> r = pager.getVisiblePageNumbers();
 		assertThat(r).isEqualTo(Range.closed(1, 1));
 	}
 
 	@Test(dataProvider = "threePagePagers")
-	public void testGetVisiblePageNumbersThreePages(int itemCount, int itemsPerPage) {
+	public void shouldThreePagePagerShowThreePages(int itemCount, int itemsPerPage) {
 		Pager pager = new Pager(itemCount, itemsPerPage);
 		assertThat(pager.getVisiblePageNumbers()).isEqualTo(Range.closed(1, 3));
 
