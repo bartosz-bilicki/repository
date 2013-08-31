@@ -1,4 +1,7 @@
-.idea
+.class
 
-/pagerKata/target
-/pagerKata/test-output
+.idea
+.idea/
+
+target/
+test-output/
